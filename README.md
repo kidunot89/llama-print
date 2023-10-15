@@ -33,7 +33,7 @@ Ensure that you have the necessary permissions to read the files and execute scr
 You can also use the provided `install.sh` script to install LlamaPrint as an alias in your shell profile. Simply run:
 
 ```bash
-./install.sh path_to_script/llamaPrint.sh
+./install.sh
 ```
 
 ## Note
