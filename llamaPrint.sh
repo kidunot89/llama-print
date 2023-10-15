@@ -15,7 +15,7 @@ print_text_content() {
 }
 
 # Parse command-line arguments.
-path="."
+path=$(pwd)
 include="*"
 exclude=""
 follow_symlinks=""
