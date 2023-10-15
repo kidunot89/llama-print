@@ -2,11 +2,19 @@
 
 # Install script for LlamaPrint
 
-script_path="$(dirname "$0")/llamaPrint.sh"
+script_name="llamaPrint.sh"
+hidden_dir="$HOME/.llama_print"
+script_path="$hidden_dir/$script_name"
 
-# Check if llamaPrint.sh exists at the determined path
+# Create hidden directory in home if it doesn't exist
+mkdir -p "$hidden_dir"
+
+# Copy llamaPrint.sh to the hidden directory
+cp "$(dirname "$0")/$script_name" "$script_path"
+
+# Check if llamaPrint.sh exists at the copied path
 if [ ! -f "$script_path" ]; then
-    echo "Error: No llamaPrint.sh found at $script_path"
+    echo "Error: Failed to copy $script_name to $script_path"
     exit 1
 fi
 
@@ -25,8 +33,15 @@ case "$shell" in
         ;;
 esac
 
-# Add the alias to the profile file
-echo "alias llama_print='bash $script_path'" >> "$profile_file"
+# Check if alias already exists in the profile file
+if grep -q "alias llama_print=" "$profile_file"; then
+    # Update the existing alias
+    sed -i.bak "s|alias llama_print=.*|alias llama_print='bash $script_path'|" "$profile_file"
+    rm "$profile_file.bak"
+else
+    # Add the alias to the profile file
+    echo "alias llama_print='bash $script_path'" >> "$profile_file"
+fi
 
 # Inform the user
 echo "LlamaPrint has been installed. Restart your terminal or run 'source $profile_file' to start using it."
